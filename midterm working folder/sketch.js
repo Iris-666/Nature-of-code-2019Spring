@@ -32,6 +32,22 @@ let planet12light = false;
 let planet13light = false;
 let planet14light = false;
 let planet15light = false;
+let planet1deng = false;
+let planet2deng = false;
+let planet3deng = false;
+let planet4deng = false;
+let planet5deng = false;
+let planet6deng = false;
+let planet7deng = false;
+let planet8deng = false;
+let planet9deng = false;
+let planet10deng = false;
+let planet11deng = false;
+let planet12deng = false;
+let planet13deng = false;
+let planet14deng = false;
+let planet15deng = false;
+
 
 let params = {
   debugMode: false,
@@ -54,6 +70,7 @@ gui.add(params, 'controlSpd', 0.5, 1 )
 function preload() {
   soundFormats('mp3', 'ogg');
   music = loadSound('gemini.mp3');
+  music.setVolume(0.1);
   deng = loadSound('deng.mp3');
 }
 
@@ -670,6 +687,67 @@ if(params.debugMode){
     opa -= 4;
   }
 
+  if(planet1light == true && planet1deng == false ){
+    deng.play();
+    planet1deng = true;
+  }
+  if(planet2light == true && planet2deng == false ){
+    deng.play();
+    planet2deng = true;
+  }
+  if(planet3light == true && planet3deng == false ){
+    deng.play();
+    planet3deng = true;
+  }
+  if(planet4light == true && planet4deng == false ){
+    deng.play();
+    planet4deng = true;
+  }
+
+  if(planet5light == true && planet5deng == false ){
+    deng.play();
+    planet5deng = true;
+  }
+  if(planet6light == true && planet6deng == false ){
+    deng.play();
+    planet6deng = true;
+  }
+  if(planet7light == true && planet7deng == false ){
+    deng.play();
+    planet7deng = true;
+  }
+  if(planet8light == true && planet8deng == false ){
+    deng.play();
+    planet8deng = true;
+  }
+  if(planet9light == true && planet9deng == false ){
+    deng.play();
+    planet9deng = true;
+  }
+  if(planet10light == true && planet10deng == false ){
+    deng.play();
+    planet10deng = true;
+  }
+  if(planet11light == true && planet11deng == false ){
+    deng.play();
+    planet11deng = true;
+  }
+  if(planet12light == true && planet12deng == false ){
+    deng.play();
+    planet12deng = true;
+  }
+  if(planet13light == true && planet13deng == false ){
+    deng.play();
+    planet13deng = true;
+  }
+  if(planet14light == true && planet14deng == false ){
+    deng.play();
+    planet14deng = true;
+  }
+  if(planet15light == true && planet15deng == false ){
+    deng.play();
+    planet15deng = true;
+  }
 
 }
 
