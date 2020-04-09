@@ -8,6 +8,10 @@ let star2Reflections = [];
 const C_GRAVITY = 1;
 let canvasWidth, canvasHeight;
 let offsetX, offetY;
+let start = false;
+let startbt;
+let music;
+let deng;
 
 let planetParticles1 = [];
 let planetParticles2 = [];
@@ -47,16 +51,20 @@ gui.add(params, 'controlSpd', 0.5, 1 )
 // gui.add(params, 'bubbleYposition', 0, 800);
 // gui.add(params, 'collisionForce', 0, 4);
 
-
+function preload() {
+  soundFormats('mp3', 'ogg');
+  music = loadSound('gemini.mp3');
+  deng = loadSound('deng.mp3');
+}
 
 function setup(){
   // var cnv = createCanvas(windowWidth, 10000);
   // cnv.id('mycanvas')
   // cnv.position(0,-9000,'absolute')
   // mycanvas = document.getElementById('mycanvas')
-
   createCanvas(windowWidth, windowHeight);
 
+  console.log(windowWidth);
   canvasWidth = windowWidth;
   canvasHeight = 6500;
 
@@ -67,8 +75,8 @@ function setup(){
 
   background(0);
 
- s = new Star(1700,6000);
- s2 = new Star2(700,6000);
+ s = new Star(1900,5700);
+ s2 = new Star2(900,5700);
  // sReflection = new StarReflection(s.pos.x,s.pos.y)
 
 
@@ -78,7 +86,10 @@ function draw(){
   // blendMode(ADD);
 
 
+
   updateNavigation();
+
+
 
   translate(-offsetX, -offsetY);
   // console.log(offsetX, offsetY);
@@ -88,11 +99,44 @@ function draw(){
   //   fill('white')
   //   ellipse(300,i,10,10)
   // }
+  if(start ==false){
+  rectMode(CENTER)
+  noFill();
+  stroke(102,186,183);
+  startbt = rect(windowWidth/2,5700,400,100,20);
+  rect(2000,6230,100,100,20);
+  triangle(1990,6220,1990,6240,2020,6230)
+  rect(1800,6230,100,100,20);
+  triangle(1820,6220,1820,6240,1790,6230)
+  stroke(240,160,107);
+  rect(1000,6230,100,100,20);
+  rect(800,6230,100,100,20);
+  fill(240,160,107);
+  textFont('Share Tech Mono',40)
+  text('D',990,6240);
+  text('A',790,6240)
+  fill(102,186,183);
+  textSize(90);
+  textFont('Share Tech Mono')
+  text('START',1320,5730);
+  if(mouseX > 1240 && mouseX < 1630 && mouseY > 734 && mouseY < 833){
+    cursor('pointer')
+    if(mouseIsPressed){
+      start = true;
+      music.loop();
 
+    }
+  }else{
+    cursor(ARROW)
+  }
+}else{
+  cursor(ARROW)
+}
 
   let spdVectorLeft = createVector(-params.controlSpd,0)
   let spdVectorRight = createVector(params.controlSpd,0)
 
+if(start){
   if (keyIsDown(LEFT_ARROW)) {
     s.applyForce(spdVectorLeft)
   } else if (keyIsDown(RIGHT_ARROW)) {
@@ -104,6 +148,7 @@ function draw(){
   } else if (keyIsDown(68)) {
     s2.applyForce(spdVectorRight)
   }
+}
 
 //planets
 
