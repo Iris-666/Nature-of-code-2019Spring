@@ -3,6 +3,8 @@ let s2;
 const C_RESISTANCE = 0.005;
 let tails = [];
 let tails2 = [];
+let star1Reflections = [];
+let star2Reflections = [];
 const C_GRAVITY = 1;
 let canvasWidth, canvasHeight;
 let offsetX, offetY;
@@ -65,8 +67,9 @@ function setup(){
 
   background(0);
 
- s = new Star(1700,5700);
- s2 = new Star2(700,5700);
+ s = new Star(1700,6000);
+ s2 = new Star2(700,6000);
+ // sReflection = new StarReflection(s.pos.x,s.pos.y)
 
 
 }
@@ -441,7 +444,36 @@ function draw(){
   s2.checkBoundaries();
   s2.update();
   s2.display();
+
 pop();
+
+if(s.reflection ){
+  console.log('reflection');
+  star1Reflections.push( new StarReflection(s.pos.x,canvasHeight-70,102,186,183));
+}
+
+for (let i = 0;i<star1Reflections.length; i++){
+  let r = star1Reflections[i];
+  r.update();
+  r.display();
+  if(r.isDone == true){
+    star1Reflections.splice(i,1);
+  }
+}
+
+if(s2.reflection ){
+  star2Reflections.push( new StarReflection(s2.pos.x,canvasHeight-75,240,160,107));
+}
+
+for (let i = 0;i<star2Reflections.length; i++){
+  let r = star2Reflections[i];
+  r.update();
+  r.display();
+  if(r.isDone == true){
+    star2Reflections.splice(i,1);
+  }
+}
+
 
   tails.push(new Tail(s.pos.x,s.pos.y))
   for(i=0;i<tails.length;i++){
@@ -628,6 +660,7 @@ class Star{
     this.pos = createVector(x,y);
     this.vel = createVector();
     this.acc = createVector();
+    this.reflection = false;
   }
   checkCollision(other) {
     let vector = p5.Vector.sub(other.pos, this.pos);
@@ -662,7 +695,7 @@ class Star{
 }
 
   checkBoundaries() {
-    if (this.pos.y > canvasHeight - 60) {
+    if (this.pos.y > canvasHeight - 100) {
       // this.pos.y = canvasHeight;
       // this.vel.y = -this.vel.y*0.3;
       this.acc.y = -1;
@@ -670,6 +703,12 @@ class Star{
         this.pos.y = 0;
         this.vel.y = -this.vel.y *0.3;
         }
+
+    if(this.pos.y > canvasHeight - 98 && this.pos.y < canvasHeight - 90){
+      this.reflection = true;
+    }else{
+      this.reflection = false;
+    }
     if (this.pos.x < 0) {
       this.pos.x = 0;
       this.vel.x = -this.vel.x *0.3;
@@ -695,6 +734,8 @@ class Star{
       strokeWeight(1);
       stroke(colorR,colorG,colorB,opa1)
       ellipse(this.pos.x, this.pos.y, r,r);
+      stroke(colorR,colorG,colorB,opa1)
+      ellipse(this.pos.x, 2*(canvasHeight-60)-this.pos.y, r,r);
       opa1 -= 9;
     }
 
@@ -708,6 +749,9 @@ class Star{
       noFill();
       stroke(colorR,colorG,colorB,opa2)
       ellipse(this.pos.x, this.pos.y, r,r);
+      stroke(colorR,colorG,colorB,opa2)
+      ellipse(this.pos.x, 2*(canvasHeight-60)-this.pos.y, r,r);
+
       opa2 -= brightness;
     }
 
@@ -765,7 +809,7 @@ class Star2{
 }
 
   checkBoundaries() {
-    if (this.pos.y > canvasHeight - 50) {
+    if (this.pos.y > canvasHeight - 100) {
       // this.pos.y = canvasHeight;
       // this.vel.y = -this.vel.y*0.3;
       this.acc.y = -1;
@@ -773,6 +817,12 @@ class Star2{
       this.pos.y = 0;
       this.vel.y = -this.vel.y *0.3;
       }
+
+    if(this.pos.y > canvasHeight - 98 &&this.pos.y < canvasHeight - 90){
+      this.reflection = true;
+    }else{
+      this.reflection = false;
+    }
 
     if (this.pos.x < 0) {
       this.pos.x = 0;
@@ -799,6 +849,8 @@ class Star2{
       strokeWeight(1);
       stroke(colorR,colorG,colorB,opa1)
       ellipse(this.pos.x, this.pos.y, r,r);
+      stroke(colorR,colorG,colorB,opa1-20)
+      ellipse(this.pos.x, 2*(canvasHeight-50)-this.pos.y, r,r);
       opa1 -= 9;
     }
 
@@ -812,6 +864,8 @@ class Star2{
       noFill();
       stroke(colorR,colorG,colorB,opa2)
       ellipse(this.pos.x, this.pos.y, r,r);
+      stroke(colorR,colorG,colorB,opa2-20)
+      ellipse(this.pos.x, 2*(canvasHeight-50)-this.pos.y, r,r);
       opa2 -= brightness;
     }
 
@@ -893,6 +947,31 @@ class Tail2{
     }
   }
 }
+
+class StarReflection{
+  constructor(x,y,r,g,b){
+    this.pos = createVector(x,y);
+    this.rad = 5;
+    this.isDone = false;
+    this.r = r;
+    this.g = g;
+    this.b = b;
+
+  }
+  update(){
+    this.rad += 2;
+    if(this.rad > 200){
+      this.isDone = true;
+    }
+  }
+  display(){
+    noFill();
+    stroke(this.r,this.g,this.b);
+    ellipse(this.pos.x,this.pos.y,this.rad,this.rad*0.3)
+  }
+
+}
+
 
 // class Planet{
 //   constructor(x,y,r,g,b,rad,lightr,lightg,lightb){
