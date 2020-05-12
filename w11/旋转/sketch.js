@@ -2,22 +2,30 @@ const RESOLUTION = 40;
 let rows, cols;
 let angles = [];
 let vehicles = [];
+let vector;
+let time = false;
 
 
 function setup() {
-  createCanvas(380, 500);
-  background(50);
+  createCanvas(windowWidth, windowHeight);
+  background(0);
+  noCursor();
+setTimeout(function(){
+  time = true;
+},40000)
 
   cols = ceil(width / RESOLUTION);
   rows = ceil(height / RESOLUTION);
 
-  for (let i=0; i<100; i++) {
-    vehicles.push( new Vehicle(random(width), random(height)) );
+  for (let i=0; i<500; i++) {
+    x = sin(i)*random(50,70) + width/2;
+    y = cos(i)*random(50,70) + height/2;
+    vehicles.push( new Vehicle(x, y) );
   }
 }
 
 function draw() {
-  //background(50);
+  // background(50);
 
   // flow field
   for (let r = 0; r < rows; r++) {
@@ -32,7 +40,13 @@ function draw() {
       let angleFlowField = map(noiseValue, 0, 1, 0, TWO_PI);
 
       let sinValue = sin(frameCount * 0.01) * PI/6;
-      let vector = createVector(mouseX - x, mouseY - y);
+
+      if(time == false){
+       vector = createVector(width/2 - x, height/2 - y);
+     }else{
+       vector = createVector(mouseX - x, mouseY - y);
+
+     }
       let angleMouse = vector.rotate(PI/2 + sinValue).heading();
 
       let index = c + r * cols;
@@ -40,17 +54,15 @@ function draw() {
       let angle = angleFlowField * 0.0 + angleMouse * 1.0;
       angles[index] = angle;
 
-      /*
-      stroke(255);
-      fill(0);
-      rect(x, y, RESOLUTION, RESOLUTION);
-      push();
-      translate(x + RESOLUTION/2, y + RESOLUTION/2);
-      rotate(angle);
-      stroke(255);
-      line(0, 0, RESOLUTION/2, 0);
-      pop();
-      */
+      // stroke(255);
+      // fill(0);
+      // rect(x, y, RESOLUTION, RESOLUTION);
+      // push();
+      // translate(x + RESOLUTION/2, y + RESOLUTION/2);
+      // rotate(angle);
+      // stroke(255);
+      // line(0, 0, RESOLUTION/2, 0);
+      // pop();
     }
   }
 
@@ -187,7 +199,10 @@ class Vehicle {
     let sinValue = sin(freq) * amp;
 
     //triangle(0, 0, -15, sinValue, -15, -sinValue);
-    ellipse(0, 0, 1, 1);
+    // ellipse(0, 0, 1, 1);
+    stroke(200,50);
+    strokeWeight(1);
+    point(0, 0)
     //stroke(0, 0, 255);
     //noFill();
     //ellipse(0, 0, this.brakeRad*2, this.brakeRad*2);
